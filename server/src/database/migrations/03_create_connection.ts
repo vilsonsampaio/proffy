@@ -9,11 +9,13 @@ export async function up(knex: Knex) {
       .references('id')
       .inTable('users')
       .onUpdate('CASCADE')
-      .onDelete('CASCADE');
+      .onDelete('CASCADE')
+    ;
     
     table.timestamp('created_at')
       .defaultTo('now()')
-      .notNullable();
+      .notNullable()
+    ;
   });
 }
 

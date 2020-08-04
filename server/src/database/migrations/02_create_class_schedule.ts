@@ -13,7 +13,8 @@ export async function up(knex: Knex) {
       .references('id')
       .inTable('classes')
       .onUpdate('CASCADE')
-      .onDelete('CASCADE');
+      .onDelete('CASCADE')
+    ;
   });
 }
 
