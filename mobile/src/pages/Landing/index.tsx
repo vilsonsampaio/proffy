@@ -13,10 +13,10 @@ import heartIcon from '../../assets/images/icons/heart.png';
 
 
 const Landing = () => {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
 
   function handleNavigateToGiveClassesPage() {
-    navigation.navigate('GiveClasses')
+    navigate('GiveClasses')
   }
 
   return (
