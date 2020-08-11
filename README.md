@@ -2,16 +2,16 @@
     <img alt="Proffy" title="Proffy" src=".github/logo.svg" width="220px" />
 </h1>
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/vilsonsampaio/proffy.svg?color=8257e5">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/vilsonsampaio/proffy.svg?color=9871F5">
    
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/top/vilsonsampaio/proffy.svg?color=8257e5">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/top/vilsonsampaio/proffy.svg?color=9871F5">
 
   <a href="https://github.com/vilsonsampaio/proffy/commits/master">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/vilsonsampaio/proffy.svg?color=8257e5">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/vilsonsampaio/proffy.svg?color=9871F5">
   </a>
 
   <a href="https://github.com/vilsonsampaio/">
-    <img alt="Author" src="https://img.shields.io/badge/author-Vilson%20Sampaio-8257e5">
+    <img alt="Author" src="https://img.shields.io/badge/author-Vilson%20Sampaio-9871F5">
   </a>
 </p>
 
