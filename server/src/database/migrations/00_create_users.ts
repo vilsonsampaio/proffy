@@ -6,7 +6,9 @@ export async function up(knex: Knex) {
     table.string('name').notNullable();
     table.string('surname').notNullable();
     table.string('email').notNullable();
-    table.string('password_hash').notNullable();
+    table.string('password').notNullable();
+    table.string('password_reset_token');
+    table.date('password_reset_expires');
     table.string('avatar');
     table.string('whatsapp');
     table.string('bio');
