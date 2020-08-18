@@ -15,12 +15,14 @@ const sessionsController = new SessionsController();
 const classesControllers = new ClassesController();
 const connectionsController = new ConnectionsController();
 
-routes.post('/users', usersControllers.store);
-routes.post('/sessions', sessionsController.store);
+routes.post('/sign_in', sessionsController.signIn);
+routes.post('/sign_up', sessionsController.signUp);
+routes.post('/forgot_password', sessionsController.forgotPassword);
+routes.post('/reset_password', sessionsController.resetPassword);
+
 
 
 routes.use(authMiddleware);
-
 
 routes.get('/check-token', (req, res) => res.json({ ok: true }));
 
