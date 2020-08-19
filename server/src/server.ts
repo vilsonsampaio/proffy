@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 
 import routes from './routes';
 
@@ -9,6 +10,10 @@ app.use(cors());
 
 app.use(express.json());
 
+// Configurando a rota uploads
+app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
+
 app.use(routes);
+
 
 app.listen(3333);
