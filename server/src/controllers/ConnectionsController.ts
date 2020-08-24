@@ -16,12 +16,16 @@ export default class ConnectionsController {
   }
   
   async show(request: Request, response: Response) {
-    const totalConnections = await db('connections')
-      .count('* as total')
+    const { total_connections } = await db('connections')
+      .count('* as total_connections')
+      .first()
     ;
 
-    const { total } = totalConnections[0];
+    const { total_teachers } = await db('classes')
+      .countDistinct('user_id as total_teachers')
+      .first()
+    ;
 
-    return response.json({ total });
+    return response.json({ total_connections, total_teachers });
   }
 }
