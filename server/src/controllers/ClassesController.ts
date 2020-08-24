@@ -6,7 +6,7 @@ import convertHourToMinutes from '../utils/convertHoursToMinutes';
 import paginate from '../utils/paginate';
 
 
-interface ScheduleItem {
+export interface ScheduleItem {
   week_day: number;
   from: string;
   to: string;
@@ -93,14 +93,14 @@ export default class ClassesController {
       }
 
       const includingSchedule = classes.map(async (item) => {
-        const class_schedule = await trx('class_schedule')
+        const schedule = await trx('class_schedule')
           .where('class_id', '=', item.id)
           .select(['id', 'week_day', 'from', 'to'])
         ;
 
         return { 
           ...item, 
-          class_schedule,
+          schedule,
         };
       });
 
