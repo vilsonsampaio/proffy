@@ -3,6 +3,8 @@ import { Request, Response } from 'express';
 import db from '../database/connection';
 
 import convertHourToMinutes from '../utils/convertHoursToMinutes';
+import paginate from '../utils/paginate';
+
 
 interface ScheduleItem {
   week_day: number;
@@ -12,32 +14,18 @@ interface ScheduleItem {
 
 export default class ClassesController {
   async store(request: Request, response: Response) {
-    const {
-      name,
-      avatar,
-      whatsapp,
-      bio,
-      subject,
-      cost,
-      schedule
-    } = request.body;
+    const { userId } = request;
+
+
+    const { subject, cost, schedule } = request.body;
 
     const trx = await db.transaction();
 
     try {
-      const insertedUsersIds = await trx('users').insert({
-        name,
-        avatar,
-        whatsapp,
-        bio,
-      });
-    
-      const user_id = insertedUsersIds[0];
-    
       const insertedClassesIds = await trx('classes').insert({
         subject,
         cost,
-        user_id
+        user_id: userId,
       });
     
       const class_id = insertedClassesIds[0];
@@ -49,7 +37,7 @@ export default class ClassesController {
           to: convertHourToMinutes(scheduleItem.to),
           class_id
         }
-      })
+      });
     
       await trx('class_schedule').insert(classSchedule);
     
@@ -73,31 +61,48 @@ export default class ClassesController {
     const subject = filters.subject as string;
     const week_day = filters.week_day as string;
     const time = filters.time as string;
+    const page = Number(filters.page as string) || 1;
 
+    let classes;
 
     if (!filters.week_day || !filters.subject || !filters.time) {
-      return response.status(400).json({
-        error: 'Missing filters to search classes'
-      });
+      classes = await db('classes')
+        .join('users', 'classes.user_id', '=', 'users.id')
+        .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
+      ;
+    } else {
+      const timeinMinutes = convertHourToMinutes(time);
+  
+      classes = await db('classes')
+        .whereExists(function() {
+          this.select('class_schedule.*')
+            .from('class_schedule')
+            .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
+            .whereRaw('`class_schedule`.`week_day` == ??', [Number(week_day)])
+            .whereRaw('`class_schedule`.`from` <= ??', [timeinMinutes])
+            .whereRaw('`class_schedule`.`to` > ??', [timeinMinutes])
+          ;
+        })
+        .where('classes.subject', '=', subject)
+        .join('users', 'classes.user_id', '=', 'users.id')
+        .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
+      ;
     }
 
-    const timeinMinutes = convertHourToMinutes(time);
+    const includingSchedule = classes.map(async (item) => {
+      const class_schedule = await db('class_schedule')
+        .where('class_id', '=', item.id)
+        .select(['id', 'week_day', 'from', 'to'])
+      ;
 
-    const classes = await db('classes')
-      .whereExists(function() {
-        this.select('class_schedule.*')
-          .from('class_schedule')
-          .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
-          .whereRaw('`class_schedule`.`week_day` == ??', [Number(week_day)])
-          .whereRaw('`class_schedule`.`from` <= ??', [timeinMinutes])
-          .whereRaw('`class_schedule`.`to` > ??', [timeinMinutes])
-        ;
-      })
-      .where('classes.subject', '=', subject)
-      .join('users', 'classes.user_id', '=', 'users.id')
-      .select(['classes.*', 'users.*'])
-    ;
+      return { 
+        ...item, 
+        class_schedule,
+      };
+    });
 
-    return response.json(classes);
+    const serializedClass = paginate(await Promise.all(includingSchedule), page, 5);
+
+    return response.json(serializedClass);
   }
 }
