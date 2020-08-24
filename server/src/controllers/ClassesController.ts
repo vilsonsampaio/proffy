@@ -63,46 +63,60 @@ export default class ClassesController {
     const time = filters.time as string;
     const page = Number(filters.page as string) || 1;
 
-    let classes;
+    const trx = await db.transaction();
 
-    if (!filters.week_day || !filters.subject || !filters.time) {
-      classes = await db('classes')
-        .join('users', 'classes.user_id', '=', 'users.id')
-        .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
-      ;
-    } else {
-      const timeinMinutes = convertHourToMinutes(time);
-  
-      classes = await db('classes')
-        .whereExists(function() {
-          this.select('class_schedule.*')
-            .from('class_schedule')
-            .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
-            .whereRaw('`class_schedule`.`week_day` == ??', [Number(week_day)])
-            .whereRaw('`class_schedule`.`from` <= ??', [timeinMinutes])
-            .whereRaw('`class_schedule`.`to` > ??', [timeinMinutes])
-          ;
-        })
-        .where('classes.subject', '=', subject)
-        .join('users', 'classes.user_id', '=', 'users.id')
-        .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
-      ;
+    try {
+      let classes;
+
+      if (!week_day || !subject || !time) {
+        classes = await trx('classes')
+          .join('users', 'classes.user_id', '=', 'users.id')
+          .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
+        ;
+      } else {
+        const timeinMinutes = convertHourToMinutes(time);
+    
+        classes = await trx('classes')
+          .whereExists(function() {
+            this.select('class_schedule.*')
+              .from('class_schedule')
+              .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
+              .whereRaw('`class_schedule`.`week_day` == ??', [Number(week_day)])
+              .whereRaw('`class_schedule`.`from` <= ??', [timeinMinutes])
+              .whereRaw('`class_schedule`.`to` > ??', [timeinMinutes])
+            ;
+          })
+          .where('classes.subject', '=', subject)
+          .join('users', 'classes.user_id', '=', 'users.id')
+          .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
+        ;
+      }
+
+      const includingSchedule = classes.map(async (item) => {
+        const class_schedule = await trx('class_schedule')
+          .where('class_id', '=', item.id)
+          .select(['id', 'week_day', 'from', 'to'])
+        ;
+
+        return { 
+          ...item, 
+          class_schedule,
+        };
+      });
+
+      const serializedClass = paginate(await Promise.all(includingSchedule), page);
+
+      await trx.commit();
+
+      return response.json(serializedClass);
+    } catch (error) {
+      console.log(error);
+      
+      await trx.rollback();
+
+      return response.status(400).json({
+        error: 'Unexpected error while searching for classes'
+      });
     }
-
-    const includingSchedule = classes.map(async (item) => {
-      const class_schedule = await db('class_schedule')
-        .where('class_id', '=', item.id)
-        .select(['id', 'week_day', 'from', 'to'])
-      ;
-
-      return { 
-        ...item, 
-        class_schedule,
-      };
-    });
-
-    const serializedClass = paginate(await Promise.all(includingSchedule), page, 5);
-
-    return response.json(serializedClass);
   }
 }
