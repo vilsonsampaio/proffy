@@ -47,7 +47,10 @@ export default class SessionsController {
     const { email, password } = request.body;
     
     try {
-      const user = await db('users').where('email', email).first();
+      const user = await db('users')
+        .where('email', email)
+        .first()
+      ;
 
       if (!user) return response.status(401).json({ error: 'User not found' });
 
@@ -57,7 +60,15 @@ export default class SessionsController {
 
       const { id, name, surname, avatar, whatsapp, bio } = user;
 
-      const serializedUser = { id, name, surname, email, avatar, whatsapp, bio };
+      const serializedUser = { 
+        id, 
+        name, 
+        surname, 
+        email, 
+        avatar: avatar ? `http://localhost:3333/uploads/${avatar}` : null, 
+        whatsapp, 
+        bio 
+      };
 
       const token = jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,

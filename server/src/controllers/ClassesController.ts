@@ -100,6 +100,7 @@ export default class ClassesController {
 
         return { 
           ...item, 
+          avatar: `http://localhost:3333/uploads/${item.avatar}`,
           schedule,
         };
       });
