@@ -9,8 +9,7 @@ import convertHourToMinutes from '../utils/convertHoursToMinutes';
 export default class UsersController {
   async show(request: Request, response: Response) {
     const { userId } = request;
-    console.log(userId)
-    
+
     const trx = await db.transaction();
 
     try {
@@ -27,15 +26,38 @@ export default class UsersController {
         .first()
       ;
 
+      let serializedUser;
+      if (!classes) {
+        serializedUser = { 
+          ...user,
+          id: null,
+          subject: null,
+          cost: null,
+          schedule: null,
+          user_id: user.id,
+          avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : null,
+        };
+        
+        return response.json(serializedUser);
+      }
 
       const schedule = await trx('class_schedule')
         .where('class_id', classes.id)
         .select(['id', 'week_day', 'from', 'to'])
       ;
 
-      if (!schedule) return response.status(401).json({ error: 'Schedule not found' });
+      if (!schedule) {
+        serializedUser = { 
+          ...user,
+          ...classes,
+          schedule: null,
+          avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : null,
+        };
+        
+        return response.json(serializedUser);
+      }
 
-      const serializedUser = { 
+      serializedUser = { 
         ...user, 
         ...classes,
         avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : null,
@@ -127,7 +149,7 @@ export default class UsersController {
       await trx('class_schedule').insert(classSchedule);
 
       const serializedUser = {
-        userId,
+        user_id: userId,
         name,
         surname,
         email,
