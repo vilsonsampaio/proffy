@@ -9,6 +9,7 @@ import UsersController from './controllers/UsersController';
 import SessionsController from './controllers/SessionsController';
 import ClassesController from './controllers/ClassesController';
 import ConnectionsController from './controllers/ConnectionsController';
+import TeachersController from './controllers/TeachersController';
 
 
 const routes = express.Router();
@@ -18,6 +19,8 @@ const usersControllers = new UsersController();
 const sessionsController = new SessionsController();
 const classesControllers = new ClassesController();
 const connectionsController = new ConnectionsController();
+const teachersController = new TeachersController();
+
 
 routes.post('/sign_in', sessionsController.signIn);
 routes.post('/sign_up', sessionsController.signUp);
@@ -32,9 +35,11 @@ routes.get('/check-token', (req, res) => res.json({ ok: true }));
 routes.get('/users', usersControllers.show);
 routes.put('/users', upload.single('avatar'), usersControllers.update);
 
-
 routes.get('/classes', classesControllers.index);
 routes.post('/classes', classesControllers.store);
+
+routes.get('/teachers', teachersController.show);
+routes.get('/check-teacher', teachersController.check);
 
 routes.get('/connections', connectionsController.show);
 routes.post('/connections', connectionsController.store);
