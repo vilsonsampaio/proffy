@@ -30,7 +30,7 @@ routes.post('/reset_password', sessionsController.resetPassword);
 // Privando as rotas abaixo, possibilitando acesso apenas com um token
 routes.use(authMiddleware);
 
-routes.get('/check-token', (req, res) => res.json({ ok: true }));
+routes.get('/check_token', (req, res) => res.json({ ok: true }));
 
 routes.get('/users', usersControllers.show);
 routes.put('/users', upload.single('avatar'), usersControllers.update);
@@ -39,7 +39,7 @@ routes.get('/classes', classesControllers.index);
 routes.post('/classes', classesControllers.store);
 
 routes.get('/teachers', teachersController.show);
-routes.get('/check-teacher', teachersController.check);
+routes.get('/check_teacher', teachersController.check);
 
 routes.get('/connections', connectionsController.show);
 routes.post('/connections', connectionsController.store);
