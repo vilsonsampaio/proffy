@@ -5,6 +5,7 @@ import db from '../database/connection';
 import { ScheduleItem } from './ClassesController';
 
 import convertHourToMinutes from '../utils/convertHoursToMinutes';
+import cleanPhoneNumber from '../utils/cleanPhoneNumber';
 
 export default class UsersController {
   async show(request: Request, response: Response) {
@@ -23,6 +24,7 @@ export default class UsersController {
 
       const classes = await trx('classes')
         .where('user_id', userId)
+        .select(['id', 'subject', 'cost'])
         .first()
       ;
 
@@ -30,11 +32,10 @@ export default class UsersController {
       if (!classes) {
         serializedUser = { 
           ...user,
-          id: null,
+          class_id: null,
           subject: null,
           cost: null,
-          schedule: null,
-          user_id: user.id,
+          schedule: [],
           avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : null,
         };
         
@@ -43,14 +44,16 @@ export default class UsersController {
 
       const schedule = await trx('class_schedule')
         .where('class_id', classes.id)
-        .select(['id', 'week_day', 'from', 'to'])
+        .select(['id', 'week_day', 'from', 'to', 'class_id'])
       ;
 
       if (!schedule) {
         serializedUser = { 
           ...user,
           ...classes,
-          schedule: null,
+          id: user.id,
+          class_id: classes.id,
+          schedule: [],
           avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : null,
         };
         
@@ -60,6 +63,8 @@ export default class UsersController {
       serializedUser = { 
         ...user, 
         ...classes,
+        id: user.id,
+        class_id: classes.id,
         avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : null,
         schedule,
       };
@@ -108,26 +113,31 @@ export default class UsersController {
           email,
           avatar,
           bio,
-          whatsapp,
+          whatsapp: cleanPhoneNumber(whatsapp),
         })
       ;
 
       
-      const { id: class_id_deleted } = await trx('classes')
+      const classes = await trx('classes')
         .where('user_id', userId)
         .select('id')
         .first()
       ;
+
       
-      await trx('classes')
-        .where('id', class_id_deleted)
-        .del()
-      ;
-      
-      await trx('class_schedule')
-        .where('class_id', class_id_deleted)
-        .del()
-      ;
+      if (classes) {
+        const { id: class_id_deleted } = classes;
+
+        await trx('classes')
+          .where('id', class_id_deleted)
+          .del()
+        ;
+        
+        await trx('class_schedule')
+          .where('class_id', class_id_deleted)
+          .del()
+        ;
+      }
 
       const insertedClassesIds = await trx('classes').insert({
         subject,
@@ -149,16 +159,17 @@ export default class UsersController {
       await trx('class_schedule').insert(classSchedule);
 
       const serializedUser = {
-        user_id: userId,
+        id: userId,
         name,
         surname,
         email,
         avatar: avatar ? `http://localhost:3333/uploads/${avatar}` : null,
         bio,
-        whatsapp,
+        whatsapp: cleanPhoneNumber(whatsapp),
         subject,
         cost: Number(cost),
-        schedule: classSchedule
+        class_id: class_id_inserted,
+        schedule: classSchedule,
       }; 
 
       await trx.commit();

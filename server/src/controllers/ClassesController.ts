@@ -71,7 +71,7 @@ export default class ClassesController {
       if (!week_day || !subject || !time) {
         classes = await trx('classes')
           .join('users', 'classes.user_id', '=', 'users.id')
-          .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
+          .select(['classes.*', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
         ;
       } else {
         const timeinMinutes = convertHourToMinutes(time);
@@ -86,21 +86,22 @@ export default class ClassesController {
               .whereRaw('`class_schedule`.`to` > ??', [timeinMinutes])
             ;
           })
-          .where('classes.subject', '=', subject)
+          .where('classes.subject', subject)
           .join('users', 'classes.user_id', '=', 'users.id')
-          .select(['classes.*', 'users.id', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
+          .select(['classes.*', 'users.name','users.surname', 'users.avatar', 'users.bio', 'users.whatsapp'])
         ;
       }
 
+
       const includingSchedule = classes.map(async (item) => {
         const schedule = await trx('class_schedule')
-          .where('class_id', '=', item.id)
-          .select(['id', 'week_day', 'from', 'to'])
+          .where('class_id', item.id)
+          .select(['id', 'week_day', 'from', 'to', 'class_id'])
         ;
 
         return { 
           ...item, 
-          avatar: `http://localhost:3333/uploads/${item.avatar}`,
+          avatar: item.avatar ? `http://localhost:3333/uploads/${item.avatar}` : null,
           schedule,
         };
       });
