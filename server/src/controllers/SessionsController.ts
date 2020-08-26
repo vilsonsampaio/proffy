@@ -112,8 +112,17 @@ export default class SessionsController {
       mailer.sendMail(
         {
           to: email,
-          from: 'contato.vilsonsampaio@gmail.com',
-          html: `<p>Você esqueceu sua senha? Não tem problema, <a href='${mailConfig.resetPasswordPageURL}?token=${token}&id=${user.id}'>clique aqui</a> para recuperar ou cole esse endereço em seu navegador ${mailConfig.resetPasswordPageURL}?token=${token}&id=${user.id}</p>`,
+          from: 'naoresponda@proffy.com',
+          subject: 'Recupere seu acesso - Proffy',
+          html: `
+            <p>
+              Você esqueceu sua senha? Não tem problema, <a href='${mailConfig.resetPasswordPageURL}?token=${token}&id=${user.id}'>clique aqui</a> para recuperar ou cole esse endereço em seu navegador: 
+              
+              <strong>
+                ${mailConfig.resetPasswordPageURL}?token=${token}&id=${user.id}
+              </strong>
+            </p>
+          `,
         },
         (error) => {
           if (error) return response.status(400).json({ error: 'Cannot send forgot password email' });
