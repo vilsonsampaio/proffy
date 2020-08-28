@@ -10,6 +10,7 @@ export default {
 
     secondary: '#04D361',
     secondaryLight: '#24EF7F',
+    secondaryDark: '#04BF58',
 
     textTitle: '#32264D',
     textBase: '#6A6180',
@@ -29,5 +30,8 @@ export default {
     background: '#F0F0F7',
     backgroundHover: '#EBEBF5',
     backgroundLinesInWhite: '#E6E6F0',
+  },
+  radius: {
+    default: '0.8rem',
   },
 } as const;
