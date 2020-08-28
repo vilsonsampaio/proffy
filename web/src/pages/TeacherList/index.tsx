@@ -5,7 +5,8 @@ import TeacherItem, { Teacher } from '../../components/TeacherItem';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 
-import './styles.css';
+import { Container, Form } from './styles';
+
 import api from '../../services/api';
 
 
@@ -31,9 +32,9 @@ const TeacherList = () => {
   }
 
   return (
-    <div id="page-teacher-list" className="container">
+    <Container className="container">
       <PageHeader title="Esses são os proffys disponíveis.">
-        <form id="search-teachers" onSubmit={searchTeachers}>
+        <Form onSubmit={searchTeachers}>
           <Select 
             name="subject"
             label="Matéria"
@@ -78,7 +79,7 @@ const TeacherList = () => {
           <button type="submit">
             Buscar
           </button>
-        </form>
+        </Form>
       </PageHeader>
 
       <main>
@@ -86,7 +87,7 @@ const TeacherList = () => {
           return <TeacherItem key={teacher.id} teacher={teacher} />
         })}
       </main>
-    </div>
+    </Container>
   );
 }
 
