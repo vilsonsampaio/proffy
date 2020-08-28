@@ -22,6 +22,8 @@ export const Container = styled.div`
       flex-direction: row;
 
       ${ProffyHero} {
+        display: block;
+
         height: 100%;
 
         > ${SessionsHero} {
@@ -40,6 +42,8 @@ export const Container = styled.div`
         ${FormWrapper} {
           position: relative;
 
+          max-width: 35rem;
+
           > div {
             position: absolute;
             bottom: 5rem;
@@ -54,6 +58,8 @@ export const Container = styled.div`
 
 export const ProffyHero = styled.div`
   ${({ theme }) => css`
+    display: none;
+
     flex: 1;
 
     width: 100%;
@@ -63,7 +69,7 @@ export const ProffyHero = styled.div`
 export const FormContainer = styled.div`
   ${({ theme }) => css`
     width: 100%;
-    height: 70vh;
+    height: 100%;
 
     display: flex;
     align-items: center;
@@ -75,29 +81,30 @@ export const FormContainer = styled.div`
 
 export const FormWrapper = styled.div`
   ${({ theme }) => css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
-  width: 35rem;
-  height: 100%;
-
-  
-  form {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+    
     width: 100%;
+    height: 100%;
+    
+    max-width: 35rem;
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
 
-    h1 {
-      margin-bottom: 4rem;
-      
-      color: ${theme.colors.textTitle};
-      
-      font: 600 3.6rem Poppins;
-      line-height: 1;
-    }
+      h1 {
+        margin-bottom: 4rem;
+        
+        color: ${theme.colors.textTitle};
+        
+        font: 600 3.6rem Poppins;
+        line-height: 1;
+      }
 
       > span {
         display: flex;
@@ -137,12 +144,20 @@ export const FormWrapper = styled.div`
           label {
             margin-left: 1rem;
           }
-          
         }
         
         a {
           color: ${theme.colors.textComplement};
+
           font-weight: 400;
+
+          transition: all .3s;
+          
+          :hover {
+            color: ${theme.colors.primary};
+
+            text-decoration: underline;
+          }
         }
       }
 
@@ -157,7 +172,7 @@ export const FormWrapper = styled.div`
       justify-content: space-between;
       
       width: 100%;
-      margin-top: 4rem;
+      margin-top: 8rem;
 
       span {
         color: ${theme.colors.textBase};
@@ -201,6 +216,5 @@ export const FormWrapper = styled.div`
         }
       }
     }
-
   `}
 `;
