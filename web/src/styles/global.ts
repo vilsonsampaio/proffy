@@ -8,7 +8,7 @@ export default createGlobalStyle`
       font-size: 50%;
       
       @media (min-width: 700px) {
-        font-size: 60%;
+        font-size: 55%;
       }
     }
 
