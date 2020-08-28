@@ -87,7 +87,7 @@ export const FormWrapper = styled.div`
   form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
 
     h1 {
