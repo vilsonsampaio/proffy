@@ -107,6 +107,8 @@ const variants: any = {
 export const Container = styled.div<{ variant: string; }>`
   ${({ theme, variant }) => css`
     position: relative;
+    
+    width: 100%;
 
     &:focus-within::after {
       content: '';
