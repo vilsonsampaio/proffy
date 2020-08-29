@@ -6,7 +6,7 @@ import { Container } from './styles';
 
 import { ArrowBackProps } from './ArrowBack';
 
-const ArrowBack: React.FC<ArrowBackProps> = ({ to, color, ...rest }) => {
+const ArrowBack: React.FC<ArrowBackProps> = ({ to, ...rest }) => {
   return (
     <Container to={to} {...rest}>
       <BackIcon />

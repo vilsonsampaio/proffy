@@ -9,7 +9,7 @@ export const Container = styled(Link)<ArrowBackProps>`
     width: 100%;
 
     svg g > * {
-      stroke: ${color ? color : theme.colors.primary};
+      stroke: ${color || theme.colors.primary};
     }
   `}
 `;
