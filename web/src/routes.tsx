@@ -3,6 +3,9 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import SignIn from './pages/Sessions/SignIn';
 import SignUp from './pages/Sessions/SignUp';
+import ForgotPassword from './pages/Sessions/ForgotPassword';
+import ResetPassword from './pages/Sessions/ResetPassword';
+
 
 import Landing from './pages/Landing';
 import TeacherList from './pages/TeacherList';
@@ -13,6 +16,9 @@ const Routes = () => {
     <BrowserRouter>
       <Route path="/sessions/sign-in" component={SignIn} />
       <Route path="/sessions/sign-up" component={SignUp} />
+      <Route path="/sessions/forgot-password" component={ForgotPassword} />
+      <Route path="/sessions/reset-password" component={ResetPassword} />
+
 
       <Route path="/" exact component={Landing} />
       <Route path="/study" component={TeacherList} />
