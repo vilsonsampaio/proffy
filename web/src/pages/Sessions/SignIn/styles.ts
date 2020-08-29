@@ -208,10 +208,8 @@ export const FormWrapper = styled.div`
 
           margin-left: 0.8rem;
 
-          opacity: 0.5;
-
           path {
-            fill: ${theme.colors.primary};
+            fill: ${theme.colors.primary}80;
           }
         }
       }

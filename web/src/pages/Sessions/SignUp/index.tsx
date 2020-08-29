@@ -1,15 +1,25 @@
-import React from 'react';
-
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
+import React, { useState, FormEvent } from 'react';
 
 import SessionsHero from '../../../components/SessionsHero';
-
-
-import { Container, ProffyHero, FormContainer, FormWrapper } from './styles';
+import Input from '../../../components/Input';
+import Button from '../../../components/Button';
 import ArrowBack from '../../../components/ArrowBack';
 
+import { Container, ProffyHero, FormContainer, FormWrapper } from './styles';
+
+
 const SignUp: React.FC = () => {
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    
+    console.log(name, surname, email, password);
+  }
+
   return (
     <Container>
       <ProffyHero>
@@ -20,7 +30,7 @@ const SignUp: React.FC = () => {
         <FormWrapper>
           <ArrowBack to='/sessions/sign-in' />
 
-          <form>
+          <form onSubmit={handleSubmit}>
             <h1>Cadastro</h1>
             <h2>Preencha os dados abaixo para começar.</h2>
 
@@ -28,7 +38,9 @@ const SignUp: React.FC = () => {
               variant='sessions' 
               type='text'
               name="name" 
-              label="Nome" 
+              label="Nome"  
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required 
             />
 
@@ -37,6 +49,8 @@ const SignUp: React.FC = () => {
               type='text'
               name="surname" 
               label="Sobrenome" 
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
               required 
             />
 
@@ -45,6 +59,8 @@ const SignUp: React.FC = () => {
               type='email'
               name="email" 
               label="E-mail" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required 
             />
 
@@ -52,11 +68,22 @@ const SignUp: React.FC = () => {
               variant='sessions' 
               type='password'
               name="password" 
-              label="Senha" 
+              label="Senha"  
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required 
             />
 
-            <Button type='submit'>Concluir cadastro</Button>
+            <Button 
+              type='submit' 
+              disabled={
+                !(name && surname && email && password)
+                  ? true
+                  : false
+              }
+            >
+              Concluir cadastro
+            </Button>
           </form>
         </FormWrapper>
 
