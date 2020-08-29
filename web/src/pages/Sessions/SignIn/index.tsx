@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 
+import SessionsHero from '../../../components/SessionsHero';
 import Input from '../../../components/Input';
 import Button from '../../../components/Button';
-
-import SessionsHero from '../../../components/SessionsHero';
 
 import { HeartIcon } from '../../../assets/images/icons';
 
 import { Container, ProffyHero, FormContainer, FormWrapper } from './styles';
 
+
 const SignIn: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    console.log(email, password, rememberMe);
+  }
+
   return (
     <Container>
       <ProffyHero>
@@ -20,7 +30,7 @@ const SignIn: React.FC = () => {
       <FormContainer>
         <FormWrapper>
         
-        <form>
+        <form onSubmit={handleSubmit}>
           <h1>Fazer login</h1>
 
           <Input 
@@ -28,6 +38,8 @@ const SignIn: React.FC = () => {
             type='email'
             name="email" 
             label="E-mail" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required 
           />
 
@@ -36,12 +48,19 @@ const SignIn: React.FC = () => {
             type='password'
             name="password" 
             label="Senha" 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required 
           />
           
           <span>
             <div>
-              <input type="checkbox" id="remember"/>
+              <input 
+                type="checkbox" 
+                id="remember"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
 
               <label htmlFor="remember">Lembrar-me</label>
             </div>
@@ -49,8 +68,16 @@ const SignIn: React.FC = () => {
             <Link to="/sessions/forgot-password">Esqueci minha senha</Link>
           </span>
 
-
-          <Button type='submit'>Entrar</Button>
+          <Button 
+            type='submit'
+            disabled={
+              !(email && password) 
+                ? true 
+                : false
+            }
+          >
+              Entrar
+          </Button>
         </form>
 
         <div>
@@ -64,7 +91,6 @@ const SignIn: React.FC = () => {
           </p>
         </div>
         </FormWrapper>
-
       </FormContainer>
     </Container>
   );

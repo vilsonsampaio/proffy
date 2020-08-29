@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const Container = styled.button`
-  ${({ theme }) => css`
+  ${({ theme, disabled }) => css`
     width: 100%;
     height: 5.6rem;
 
@@ -17,10 +17,24 @@ export const Container = styled.button`
     border: none;
     border-radius: ${theme.radius.default};
 
-    transition: background-color .2s;
+    transition: all .2s;
 
     :hover {
       background: ${theme.colors.secondaryDark};
+    }
+
+    ${disabled
+      ? css`
+          background: ${theme.colors.shapesDisabled};
+          color: ${theme.colors.textComplement};
+
+          cursor: initial;
+      
+          :hover {
+            background: ${theme.colors.shapesDisabled};
+          }
+        `
+      : ''
     }
   `}
 

@@ -18,6 +18,9 @@ export const Container = styled.div`
     color: ${theme.colors.textBaseInPrimary};
 
     > div {
+      display: flex;
+      flex-direction: column;
+      
       svg {
         width: 100%;
         height: auto;
