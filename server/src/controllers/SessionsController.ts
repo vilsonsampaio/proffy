@@ -44,7 +44,7 @@ export default class SessionsController {
   }
 
   async signIn(request: Request, response: Response) {
-    const { email, password } = request.body;
+    const { email, password, rememberMe } = request.body;
     
     try {
       const user = await db('users')
@@ -65,13 +65,13 @@ export default class SessionsController {
         name, 
         surname, 
         email, 
-        avatar: avatar ? `http://localhost:3333/uploads/${avatar}` : null, 
+        avatar: avatar ? `http://localhost:3333/uploads/${avatar}` : `https://ui-avatars.com/api/?format=svg&background=6842C2&color=D4C2FF&name=${user.name}%20${user.surname}`, 
         whatsapp, 
         bio 
       };
 
       const token = jwt.sign({ id }, authConfig.secret, {
-        expiresIn: authConfig.expiresIn,
+        expiresIn: authConfig.expiresIn(rememberMe),
       });
       
       return response.json({ user: serializedUser, token });

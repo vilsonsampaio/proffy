@@ -1,4 +1,4 @@
 export default {
   secret: 'proffy',
-  expiresIn: '7d',
+  expiresIn: (rememberMe: boolean) => rememberMe ? '7d' : '1d',
 }

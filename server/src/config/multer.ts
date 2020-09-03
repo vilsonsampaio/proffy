@@ -1,7 +1,6 @@
 import multer from 'multer';
 import path from 'path';
 import crypto from 'crypto';
-import { response } from 'express';
 
 export default {
   storage: multer.diskStorage({
