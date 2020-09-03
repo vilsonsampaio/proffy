@@ -1,5 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
+
+import { AuthProvider } from './contexts/auth';
 
 import Routes from './routes/routes';
 
@@ -11,7 +14,12 @@ const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <Routes />
+        
+      <ToastContainer />
+
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

@@ -1,9 +1,9 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { createGlobalStyle, css } from 'styled-components';
 
 export default createGlobalStyle`
   ${({ theme }) => css`
-    @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Poppins:wght@400;600;700&display=swap');
-
     :root {
       font-size: 50%;
       
@@ -41,6 +41,8 @@ export default createGlobalStyle`
 
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
       overflow-x: hidden;
     }

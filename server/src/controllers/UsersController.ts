@@ -36,7 +36,7 @@ export default class UsersController {
           subject: null,
           cost: null,
           schedule: [],
-          avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : null,
+          avatar: user.avatar ? `http://localhost:3333/uploads/${user.avatar}` : `https://ui-avatars.com/api/?format=svg&background=6842C2&color=D4C2FF&name=${user.name} ${user.surname}`,
         };
         
         return response.json(serializedUser);

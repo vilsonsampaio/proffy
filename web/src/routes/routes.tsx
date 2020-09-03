@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import PrivateRoute from './PrivateRoute';
+import CustomRoute from './CustomRoute';
 
 import SignIn from '../pages/Sessions/SignIn';
 import SignUp from '../pages/Sessions/SignUp';
@@ -16,15 +16,14 @@ import TeacherForm from '../pages/TeacherForm';
 const Routes = () => {
   return (
     <BrowserRouter>
-      <Route path="/sessions/sign-in" component={SignIn} />
-      <Route path="/sessions/sign-up" component={SignUp} />
-      <Route path="/sessions/forgot-password" component={ForgotPassword} />
-      <Route path="/sessions/reset-password" component={ResetPassword} />
-      <PrivateRoute />
+      <CustomRoute exact path="/sessions/sign-in" component={SignIn} />
+      <CustomRoute exact path="/sessions/sign-up" component={SignUp} />
+      <CustomRoute exact path="/sessions/forgot-password" component={ForgotPassword} />
+      <CustomRoute exact path="/sessions/reset-password" component={ResetPassword} />
 
-      <PrivateRoute path="/" exact component={Landing} />
-      <PrivateRoute path="/study" component={TeacherList} />
-      <PrivateRoute path="/give-classes" component={TeacherForm} />
+      <CustomRoute isPrivate exact path="/" component={Landing} />
+      <CustomRoute isPrivate exact path="/study" component={TeacherList} />
+      <CustomRoute isPrivate exact path="/give-classes" component={TeacherForm} />
     </BrowserRouter>
   );
 }
