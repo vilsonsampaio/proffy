@@ -6,61 +6,111 @@ export const Container = styled.div`
     height: 100vh;
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     background: ${theme.colors.primary};
     color: ${theme.colors.textBaseInPrimary};
 
-    @media (min-width: 110rem) {
-      ${Wrapper} {
-        max-width: 110rem;
-
-        display: grid;
-        grid-template-rows: 35rem 1fr;
-        grid-template-columns: 2fr 1fr 1fr;
-        grid-template-areas: 
-          "logo hero hero"
-          "buttons buttons total"
-        ;
-
-        > img {
-          grid-area: hero;
-          justify-self: end;
-        }
-      }
-
-      ${LogoContainer} {
-        grid-area: logo;
-        align-self: center;
-
-        margin: 0;
-
-        text-align: left;
-        
-        img {
-          height: 100%;  
-        }
-        
-        h2 {
-          text-align: initial;
-          font-size: 3.6rem;
-        }
-      }
-
-
-      ${ButtonsContainer} {
-        grid-area: buttons;
+    @media (min-width: 1100px) {
+      ${TopSection} {
         justify-content: flex-start;
         
-        a {
-          font-size: 2.4rem;
-        }
+        height: 65vh;
+
+        margin-top: 2.4rem;
+
+        ${IntroContainer} {
+          flex-direction: row;
+
+          margin-top: 6rem;
+          
+          ${LogoContainer} {
+            margin: 0;
+            margin-right: 8rem;
+
+            text-align: left;
+
+            svg {
+              width: auto;
+              height: 10.5rem;
+
+              max-width: 30rem;
+            }
+
+            h2 {
+              max-width: 30rem;
+
+              font-size: 2.5rem;
+            }
+          }
+        }        
       }
 
-      ${TotalConnections} {
-        grid-area: total;
-        justify-self: end;
+      ${BottomSection} {
+        height: 35vh;
+
+        background: ${theme.colors.background};
+
+        ${Wrapper} {
+          flex-direction: row;
+
+          height: 10rem;
+
+          margin-top: 5rem;
+
+          ${BottomInfoContainer} {
+            flex: 1;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-right: 4rem;
+
+            h2 {
+              color: ${theme.colors.textBase};
+
+              font: 400 1.8rem Poppins;
+              
+              span {
+                display: block;
+                font-weight: 600;
+              }
+            }
+
+            p {
+              font: 400 1.2rem Poppins;
+              line-height: 2rem;
+
+              color: ${theme.colors.textComplement};
+
+              span {
+                display: block;
+
+                svg {
+                  width: auto;
+                  height: 1.2rem; 
+
+                  opacity: 0.5;
+
+                  > * {
+                    fill: ${theme.colors.primary};
+                  }
+                }
+              }
+            }
+          }
+
+          ${ButtonsContainer} {
+            max-width: 50rem;
+          }
+
+          > ${TotalConnections} {
+            display: none;
+          }
+        }
       }
     }
   `}
@@ -68,59 +118,97 @@ export const Container = styled.div`
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
-    > img {
-      width: 100%;
-    }    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;   
+
+    width: 100vw;
+
+    max-width: 70vw;
+
+    margin: 0 auto;
   `}
+`;
+
+export const TopSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const BottomSection = styled.section`
+  width: 100%;
+`;
+
+export const IntroContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  > svg {
+    width: 100%;
+    height: auto;
+
+    max-width: 60rem;
+    max-height: 30rem;
+  } 
 `;
 
 export const LogoContainer = styled.div`
   ${({ theme }) => css`
-    margin-bottom: 3.2rem;
+    margin: 3.2rem 0;
 
     text-align: center;
 
-    img {
-      height: 10rem;
+    svg {
+      width: auto;
+      height: 8rem;
     }
 
     h2 {
-      margin-top: 0.8rem;
+      margin-top: 0.5rem;
 
-      font-size: 2.4rem;
-      line-height: 4.6rem;
-      font-weight: 500;
+      font: 500 2rem Poppins;
+      line-height: 1.28;
     }
   `}
 `;
 
+export const BottomInfoContainer = styled.div`
+  display: none;
+`;
+
 export const ButtonsContainer = styled.div`
   ${({ theme }) => css`
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    column-gap: 1.6rem;
+
+    width: 100%;
+
+    max-width: 60rem;
 
     margin: 3.2rem 0;
 
     a {
-      width: 30rem;
-      height: 10.4rem;
+      width: 100%;
+      height: 10rem;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
       color: ${theme.colors.textTitleInPrimary};
-      font: 700 2.0rem Archivo;
+      font: 600 2rem Archivo;
 
-      border-radius: 0.8rem;
+      border-radius: ${theme.radius.default};
 
       text-decoration: none;
 
       transition: background-color 0.2s;
-
-      :first-child {
-        margin-right: 1.6rem;
-      }
 
       &.study {
         background: ${theme.colors.primaryLighter};
@@ -138,8 +226,10 @@ export const ButtonsContainer = styled.div`
         }
       }
 
-      img {
+      svg {
         width: 4rem;
+        height: auto;
+
         margin-right: 2.4rem;
       }
     }
@@ -154,7 +244,7 @@ export const TotalConnections = styled.span`
 
     font-size: 1.4rem;
 
-    img {
+    svg {
       margin-left: 0.8rem;
     }
   `}
