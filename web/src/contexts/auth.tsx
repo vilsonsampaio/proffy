@@ -1,6 +1,7 @@
 import React, { createContext, useState, useCallback, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+
+import { history } from '../routes/history';
 
 import api from '../services/api';
 
@@ -24,7 +25,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<UserProps | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const history = useHistory();
   const handleSignOut = useCallback(async () => {
     setLoading(false);
     setAuthenticated(false);
@@ -36,7 +36,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     removeDataStorage();
 
     history.push('/sessions/sign-in');
-  }, [history]);
+  }, []);
 
   const checkToken = useCallback(async (token: string) => {
       const { path, config } = CHECK_TOKEN(token);
