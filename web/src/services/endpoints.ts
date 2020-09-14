@@ -47,6 +47,14 @@ export const LIST_USER = () => {
   );
 };
 
+export const CHECK_TEACHER = () => {
+  return (
+    {
+      path: '/check_teacher',
+    }
+  );
+};
+
 export const CHECK_TOKEN = (token: string) => {
   return (
     {
@@ -59,4 +67,3 @@ export const CHECK_TOKEN = (token: string) => {
     }
   );
 };
-
