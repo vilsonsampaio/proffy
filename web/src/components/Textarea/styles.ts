@@ -9,6 +9,8 @@ ${({ theme }) => css`
   }
   
   label {
+    color: ${theme.colors.textComplement};
+
     font-size: 1.4rem;
   }
   
@@ -32,6 +34,10 @@ ${({ theme }) => css`
     outline: 0;
   
     resize: vertical;
+
+    :disabled {
+      opacity: 0.6;
+    }
   }
   
   &:focus-within::after {
