@@ -10,6 +10,7 @@ export const Container = styled.div`
 
     label {
       font-size: 1.4rem;
+      color: ${theme.colors.textComplement};
     }
 
     select {
@@ -20,14 +21,20 @@ export const Container = styled.div`
       padding: 0 1.6rem;
 
       background: ${theme.colors.shapesSecondary};
-      color: ${theme.colors.textInputs};
+      color: ${theme.colors.textBase};
 
-      font: 1.6rem Archivo;
+      font: 400 1.6rem Poppins;
 
       border: 0.1rem solid ${theme.colors.backgroundLinesInWhite};
       border-radius: ${theme.radius.default};
-      
+
       outline: 0;
+
+      cursor: pointer;
+
+      option {
+        color: ${theme.colors.textBase};
+      }
     }
 
     &:focus-within::after {
@@ -35,7 +42,7 @@ export const Container = styled.div`
       height: 0.2rem;
 
       content: '';
-      
+
       position: absolute;
       left: 1.6rem;
       right: 1.6rem;

@@ -63,6 +63,11 @@ export interface ListUserProps extends UserProps, ClassProps {
   error?: string;
 }
 
+export interface CheckTeacherProps {
+  have_classes: boolean;
+  error?: string;
+}
+
 export interface CheckTokenProps {
   ok: boolean;
   error?: string;

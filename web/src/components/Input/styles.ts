@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 
-
 const variants: any = {
   sessions: css`
     ${({ theme }) => css`
@@ -11,7 +10,7 @@ const variants: any = {
       input::placeholder {
         color: transparent;
       }
-      
+
       &:only-of-type input {
         border-radius: ${theme.radius.default};
       }
@@ -25,12 +24,12 @@ const variants: any = {
         border-bottom-left-radius: ${theme.radius.default};
         border-bottom-right-radius: ${theme.radius.default};
       }
-      
+
       &:focus-within::after {
         top: 1.2rem;
         bottom: 1.2rem;
         left: 0;
-        
+
         width: 0.2rem;
         height: calc(100% - 2.4rem);
       }
@@ -39,7 +38,7 @@ const variants: any = {
         height: 7.2rem;
 
         padding: 1rem 2.4rem 0;
-  
+
         font: 400 1.6rem Poppins;
       }
 
@@ -49,18 +48,18 @@ const variants: any = {
         left: 0;
 
         margin: 2.4rem;
-        
+
         color: ${theme.colors.textComplement};
 
         pointer-events: none;
 
-        transition: all .3s ease-out;
+        transition: all 0.3s ease-out;
       }
 
       input:focus + label,
       input:not(:placeholder-shown) + label {
         margin: 1rem 2.4rem 0;
-        
+
         font-size: 1.2rem;
       }
     `}
@@ -75,14 +74,14 @@ const variants: any = {
         left: 2.4rem;
         right: 2.4rem;
         bottom: 0;
-        
+
         width: calc(100% - 4.8rem);
         height: 0.15rem;
       }
 
       label {
         color: ${theme.colors.textComplement};
-        
+
         font-size: 1.4rem;
       }
 
@@ -104,15 +103,15 @@ const variants: any = {
   `,
 };
 
-export const Container = styled.div<{ variant: string; }>`
+export const Container = styled.div<{ variant: string }>`
   ${({ theme, variant }) => css`
     position: relative;
-    
+
     width: 100%;
 
     &:focus-within::after {
       content: '';
-      
+
       position: absolute;
 
       background: ${theme.colors.primary};
@@ -124,8 +123,13 @@ export const Container = styled.div<{ variant: string; }>`
       width: 100%;
 
       background: ${theme.colors.shapesSecondary};
+      color: ${theme.colors.textBase};
 
       border: 0.1rem solid ${theme.colors.backgroundLinesInWhite};
+
+      :disabled {
+        opacity: 0.6;
+      }
     }
 
     button {
@@ -133,7 +137,7 @@ export const Container = styled.div<{ variant: string; }>`
       top: 50%;
       right: 2.4rem;
       transform: translateY(-50%);
-      
+
       display: flex;
 
       background: none;
@@ -147,7 +151,7 @@ export const Container = styled.div<{ variant: string; }>`
 
         color: ${theme.colors.textComplement};
 
-        transition: all .2s;
+        transition: all 0.2s;
 
         :hover {
           color: ${theme.colors.primary};

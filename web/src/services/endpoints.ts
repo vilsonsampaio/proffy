@@ -7,13 +7,7 @@ export const SIGN_IN = (body: SignInBodyProps) => {
   return (
     {
       path: '/sign_in',
-      config: {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      }
+      body: body,
     }
   );
 };
@@ -45,16 +39,18 @@ export const RESET_PASSWORD = (body: ResetPasswordBodyProps) => {
   );
 };
 
-export const LIST_USER = (token: string) => {
+export const LIST_USER = () => {
   return (
     {
       path: '/users',
-      config: {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-      }
+    }
+  );
+};
+
+export const CHECK_TEACHER = () => {
+  return (
+    {
+      path: '/check_teacher',
     }
   );
 };
@@ -65,10 +61,9 @@ export const CHECK_TOKEN = (token: string) => {
       path: '/check_token',
       config: {
         headers: {
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         }
       },
     }
   );
 };
-

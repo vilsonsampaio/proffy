@@ -6,4 +6,5 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   variant?: InputVariants;
   name: string;
   label: string;
+  mask?: string;
 };

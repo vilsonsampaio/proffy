@@ -6,7 +6,7 @@ import { history } from '../routes/history';
 import api from '../services/api';
 
 import { setToken, getToken, removeToken, setDataStorage, removeDataStorage, getDataStorage } from '../services/auth';
-import { API_URL, SIGN_IN,  CHECK_TOKEN } from '../services/endpoints';
+import { SIGN_IN,  CHECK_TOKEN } from '../services/endpoints';
 
 import { SignInProps, SignInBodyProps, CheckTokenProps, UserProps } from '../services/endpoints.d'
 
@@ -42,14 +42,17 @@ export const AuthProvider: React.FC = ({ children }) => {
       const { path, config } = CHECK_TOKEN(token);
 
       try {
-        const response = await fetch(`${API_URL}${path}`, config);
-        const json: CheckTokenProps = await response.json();
-        
-        if (json.error) return json.error;
+        const { data } = await api.get<CheckTokenProps>(path, config);
 
-        if (json.ok) return true;
+        if (data.ok) return true;
+        
+        if(data.error) return data.error;
       } catch (error) {
         console.error(error);
+
+        if (error.response) {
+          return error.response.data.error;
+        } 
       }
   }, []);
 
@@ -57,28 +60,26 @@ export const AuthProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
 
-      const { path, config } = SIGN_IN({ email, password, rememberMe });
+      const { path, body } = SIGN_IN({ email, password, rememberMe });
       
-      const response = await fetch(`${API_URL}${path}`, config);
-      const json: SignInProps = await response.json();
+      const { data } = await api.post<SignInProps>(path, body);
       
-      if (json.error) throw new Error(json.error);
+      setToken(data.token);
+      setDataStorage(data.user);
 
-      if (response.ok) {
-        setToken(json.token);
-        setDataStorage(json.user);
-
-        setAuthenticated(true);
-        setData(json.user);
-        
-        api.defaults.headers.authorization = `Bearer ${json.token}`;
-      }
+      setAuthenticated(true);
+      setData(data.user);
+      
+      api.defaults.headers.authorization = `Bearer ${data.token}`;
     } catch (error) {
       setAuthenticated(false);
       setData(null);
 
       console.error(error);
-      toast.error(error.message);
+
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } 
     } finally {
       setLoading(false);
     }

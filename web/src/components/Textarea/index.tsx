@@ -1,11 +1,9 @@
-import React, { TextareaHTMLAttributes } from 'react';
+import React from 'react';
+
+import { TextareaProps } from './Textarea';
 
 import { Container } from './styles';
 
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  name: string;
-  label: string;
-}
 
 const Textarea: React.FC<TextareaProps> = ({ name, label, ...rest }) => {
   return (
